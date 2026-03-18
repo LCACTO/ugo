@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathQuiz 4ème - Révisions Interactives</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Écran d'accueil -->
+        <div id="home-screen" class="screen active">
+            <div class="header">
+                <h1>📐 MathQuiz 4ème</h1>
+                <p class="subtitle">Maîtrise les maths avec des cours et des quiz interactifs !</p>
+            </div>
+            
+            <div class="theme-grid">
+                <div class="theme-card" data-theme="thales">
+                    <div class="theme-icon">📏</div>
+                    <h3>Théorème de Thalès</h3>
+                    <p>Découvre les rapports de longueurs dans les triangles</p>
+                </div>
+                
+                <div class="theme-card" data-theme="pythagore">
+                    <div class="theme-icon">📐</div>
+                    <h3>Théorème de Pythagore</h3>
+                    <p>Calcule les longueurs dans les triangles rectangles</p>
+                </div>
+                
+                <div class="theme-card" data-theme="calcul-litteral">
+                    <div class="theme-icon">🔤</div>
+                    <h3>Calculs Littéraux</h3>
+                    <p>Développe, réduis et factorise les expressions</p>
+                </div>
+                
+                <div class="theme-card" data-theme="fractions">
+                    <div class="theme-icon">➗</div>
+                    <h3>Calculs sur les Fractions</h3>
+                    <p>Additionne, multiplie et divise les fractions</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Écran de sélection (Cours ou Quiz) -->
+        <div id="selection-screen" class="screen">
+            <button class="back-button" onclick="showScreen('home-screen')">← Retour</button>
+            
+            <div class="selection-header">
+                <h2 id="selection-title"></h2>
+            </div>
+            
+            <div class="selection-buttons">
+                <button class="big-button" onclick="showCourse()">
+                    <span class="button-icon">📚</span>
+                    <span class="button-text">Voir le Cours</span>
+                </button>
+                
+                <button class="big-button" onclick="showDifficultySelection()">
+                    <span class="button-icon">🎯</span>
+                    <span class="button-text">Faire un Quiz</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Écran de sélection de difficulté -->
+        <div id="difficulty-screen" class="screen">
+            <button class="back-button" onclick="showScreen('selection-screen')">← Retour</button>
+            
+            <div class="difficulty-header">
+                <h2>Choisis ton niveau</h2>
+            </div>
+            
+            <div class="difficulty-buttons">
+                <button class="difficulty-btn easy" onclick="startQuiz('facile')">
+                    <span class="difficulty-icon">⭐</span>
+                    <span class="difficulty-text">Facile</span>
+                    <span class="difficulty-desc">Pour débuter en douceur</span>
+                </button>
+                
+                <button class="difficulty-btn medium" onclick="startQuiz('moyen')">
+                    <span class="difficulty-icon">⭐⭐</span>
+                    <span class="difficulty-text">Moyen</span>
+                    <span class="difficulty-desc">Pour s'entraîner</span>
+                </button>
+                
+                <button class="difficulty-btn hard" onclick="startQuiz('difficile')">
+                    <span class="difficulty-icon">⭐⭐⭐</span>
+                    <span class="difficulty-text">Difficile</span>
+                    <span class="difficulty-desc">Pour les champions</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Écran de cours -->
+        <div id="course-screen" class="screen">
+            <button class="back-button" onclick="showScreen('selection-screen')">← Retour</button>
+            
+            <div class="course-container" id="course-content">
+                <!-- Le contenu du cours sera inséré ici -->
+            </div>
+        </div>
+
+        <!-- Écran de quiz -->
+        <div id="quiz-screen" class="screen">
+            <div class="quiz-header">
+                <button class="back-button" onclick="confirmQuit()">← Quitter</button>
+                <div class="quiz-progress">
+                    <span id="question-counter">Question 1/5</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quiz-container">
+                <div class="question-box">
+                    <h3 id="question-text"></h3>
+                </div>
+                
+                <div class="options-container" id="options-container">
+                    <!-- Les options seront insérées ici -->
+                </div>
+                
+                <button class="next-button" id="next-button" onclick="nextQuestion()" disabled>
+                    Suivant →
+                </button>
+            </div>
+        </div>
+
+        <!-- Écran de résultats -->
+        <div id="results-screen" class="screen">
+            <div class="results-container">
+                <div class="results-header">
+                    <div class="score-circle" id="score-circle">
+                        <span id="score-percentage">0%</span>
+                    </div>
+                    <h2 id="results-title">Bravo !</h2>
+                    <p id="results-message"></p>
+                </div>
+                
+                <div class="score-details">
+                    <div class="score-item">
+                        <span class="score-label">Note</span>
+                        <span class="score-value" id="score-value">0/5</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-label">Bonnes réponses</span>
+                        <span class="score-value correct" id="correct-answers">0</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-label">Mauvaises réponses</span>
+                        <span class="score-value incorrect" id="incorrect-answers">0</span>
+                    </div>
+                </div>
+                
+                <div class="corrections-container" id="corrections-container">
+                    <!-- Les corrections détaillées seront insérées ici -->
+                </div>
+                
+                <div class="results-buttons">
+                    <button class="big-button" onclick="retryQuiz()">
+                        <span class="button-icon">🔄</span>
+                        <span class="button-text">Recommencer</span>
+                    </button>
+                    
+                    <button class="big-button" onclick="showScreen('home-screen')">
+                        <span class="button-icon">🏠</span>
+                        <span class="button-text">Accueil</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
